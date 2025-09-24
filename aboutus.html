@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>About Us - UCatapult Foundation</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#49392a',
+                        'primary-dark': '#332519',
+                        'primary-light': '#b19a7d',
+                        'warm-beige': '#f5f1eb',
+                        'warm-grey': '#8b7355'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* -------------------------
+           Base / shared styles
+           ------------------------- */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            padding-top: calc(var(--header-height) + 3rem);
+            background: white;
+            margin: 0;
+            padding: 0;
+        }
+        html { 
+            scroll-behavior: smooth; 
+            background: white;
+        }          
+        html, body { 
+            overflow-x: hidden; 
+            width: 100%; 
+            height: 100%;
+        }
+        :root {
+            --header-height: 5rem;
+        }
+
+        /* Header styles */
+        #mainHeader {
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+            background-color: #d4c6b3;
+            z-index: 100;
+        }
+
+        #mainHeader.scrolled {
+            background-color: #b19a7d !important; /* Transparency completely removed */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        
+        /* Ensure header content is transparent */
+        #mainHeader * {
+            background-color: transparent !important;
+        }
+        
+        /* Fix for donate button in scrolled state */
+        #mainHeader.scrolled .donate-btn {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        #mainHeader.scrolled .donate-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        /* Ensure text remains visible when scrolled */
+        #mainHeader.scrolled .text-white {
+            color: white !important;
+        }
+
+        #mainHeader.scrolled .hover\\:bg-white\\/10:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        
+        /* Fix for mobile view - header overlap */
+        section:first-of-type {
+            margin-top: calc(-1 * (var(--header-height) + 3rem));
+            padding-top: calc(var(--header-height) + 3rem);
+        }
+
+        @media (max-width: 768px) {
+            body { 
+                padding-top: 5.5rem;
+            }
+            section:first-of-type { 
+                margin-top: -5.5rem;
+                padding-top: 5.5rem;
+            }
+            
+            #what-we-do {
+                padding-top: 1rem;
+                background-color: #f5f1eb !important;
+            }
+        }
+
+        /* Tab navigation styles */
+        .about-tab-nav {
+            background: rgba(177, 154, 125, 0.95); /* Changed to #b19a7d */
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: 100%;
+            z-index: 48;
+            backdrop-filter: blur(4px);
+        }
+        .about-tab-nav ul {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            list-style: none;
+            margin: 0;
+        }
+        .about-tab-nav a {
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            border-radius: 8px;
+            transition: all 0.18s;
+            display: inline-block;
+        }
+        .about-tab-nav a:hover,
+        .about-tab-nav a:focus {
+            color: #49392a;
+            transform: translateY(-2px);
+        }
+        .about-tab-nav a.active {
+            color: white;
+            background: linear-gradient(90deg,#49392a,#8e7053);
+            box-shadow: 0 6px 18px rgba(73,57,42,0.12);
+        }
+
+        /* Anchor offset fix */
+        .anchor-offset {
+            scroll-margin-top: calc(var(--header-height) + 0.25rem);
+        }
+        
+        /* Pyramid Model Styles */
+        .pyramid-container {
+            margin: 0 auto;
+            width: 550px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pyramid-layer {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pyramid-layer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .graduation {
+            width: 240px;
+            height: 50px;
+            background: linear-gradient(135deg, #49392a 0%, #5d4a38 100%);
+            border: 2px solid #3a2d20;
+        }
+
+        .mentorship {
+            width: 280px;
+            height: 50px;
+            background: linear-gradient(135deg, #8b7355 0%, #9d8466 100%);
+            border: 2px solid #6b5a44;
+        }
+
+        .planning {
+            width: 320px;
+            height: 50px;
+            background: linear-gradient(135deg, #b19a7d 0%, #c4ab8e 100%);
+            border: 2px solid #8b7355;
+        }
+
+        .foundation {
+            width: 360px;
+            height: 50px;
+            background: linear-gradient(135deg, #d4c4a8 0%, #e0d2b8 100%);
+            border: 2px solid #b19a7d;
+            color: #49392a;
+        }
+
+        /* Mobile responsiveness for pyramid */
+        @media (max-width: 480px) {
+            .pyramid-container {
+                max-width: 300px;
+                height: 300px;
+            }
+
+            .graduation { 
+                width: 180px; 
+                height: 50px; 
+                font-size: 14px; 
+            }
+            .mentorship { 
+                width: 210px; 
+                height: 50px; 
+                font-size: 14px; 
+            }
+            .planning { 
+                width: 240px; 
+                height: 50px; 
+                font-size: 14px; 
+            }
+            .foundation { 
+                width: 270px; 
+                height: 50px; 
+                font-size: 14px; 
+            }
+        }
+
+        .tap-hint {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #8b7355;
+            font-style: italic;
+        }
+        
+        /* Overlay styles */
+        .overlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(73, 57, 42, 0.8); 
+            display: none; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+            padding: 20px;
+        }
+        
+        .info-box {
+            background: white; 
+            border-radius: 16px; 
+            padding: 30px; 
+            max-width: 90%; 
+            width: 400px; 
+            position: relative; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); 
+            transform: scale(0.9); 
+            animation: popIn 0.3s ease forwards;
+        }
+        
+        @keyframes popIn {
+            to { transform: scale(1); }
+        }
+        
+        .close-btn {
+            position: absolute; 
+            top: 15px; 
+            right: 15px; 
+            width: 35px; 
+            height: 35px; 
+            border: none; 
+            background: #f0f0f0; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 18px; 
+            color: #666; 
+            transition: all 0.2s ease;
+        }
+        
+        .info-title {
+            font-size: 24px; 
+            font-weight: 700; 
+            color: #49392a; 
+            margin-bottom: 15px; 
+            padding-right: 40px;
+        }
+        
+        .info-description {
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #666;
+        }
+        
+        /* 3D Circle Diagram Styles */
+        .circle-container {
+            max-width: 100%;
+            position: relative;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: #8b7355;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.3),
+                inset 0 4px 8px rgba(255,255,255,0.3),
+                inset 0 -4px 8px rgba(0,0,0,0.1);
+            border: 3px solid rgba(73, 57, 42, 0.3);
+            margin: 0 auto;
+        }
+
+        /* Center Circle */
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(145deg, #49392a, #332519);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #f5f1eb;
+            z-index: 30;
+            border: 3px solid rgba(73, 57, 42, 0.5);
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.4),
+                inset 0 3px 6px rgba(255,255,255,0.2),
+                inset 0 -3px 6px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .center:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.5),
+                inset 0 3px 6px rgba(255,255,255,0.3),
+                inset 0 -3px 6px rgba(0,0,0,0.3),
+                0 0 30px rgba(73, 57, 42, 0.6);
+        }
+
+        /* Cover for center parts */
+        .center-cover {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 282px;
+            height: 282px;
+            background: #8b7355;
+            border-radius: 50%;
+            z-index: 25;
+            border: 3px solid rgba(73, 57, 42, 0.3);
+        }
+
+        /* Four outer sections */
+        .section {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .section-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .section-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .section:hover,
+        .section.active {
+            transform: scale(1.15);
+            filter: brightness(1.3);
+            z-index: 20;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Top section */
+        .top {
+            clip-path: polygon(50% 50%, 0 0, 100% 0);
+            background: linear-gradient(135deg, #8b7355, #b19a7d);
+            width: 100%;
+            height: 100%;
+            align-items: flex-start;
+            padding-top: 80px;
+        }
+
+        /* Bottom section */
+        .bottom {
+            clip-path: polygon(50% 50%, 0 100%, 100% 100%);
+            background: linear-gradient(135deg, #49392a, #8b7355);
+            width: 100%;
+            height: 100%;
+            align-items: flex-end;
+            padding-bottom: 80px;
+        }
+
+        /* Left section */
+        .left {
+            clip-path: polygon(0 0, 0 100%, 50% 50%);
+            background: linear-gradient(135deg, #332519, #49392a);
+            width: 100%;
+            height: 100%;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 80px;
+        }
+
+        .left .section-content {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-orientation: mixed;
+        }
+
+        /* Right section */
+        .right {
+            clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+            background: linear-gradient(135deg, #b19a7d, #f5f1eb);
+            width: 100%;
+            height: 100%;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 80px;
+        }
+
+        .right .section-content {
+            writing-mode: vertical-rl;
+        }
+
+        /* Diagonal division lines */
+        .diagonal-line {
+            position: absolute;
+            width: 2px;
+            background: rgba(73, 57, 42, 0.8);
+            z-index: 5;
+            transform-origin: center;
+        }
+
+        .diagonal-1 {
+            top: 0;
+            left: 50%;
+            height: 100%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        .diagonal-2 {
+            top: 0;
+            left: 50%;
+            height: 100%;
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        /* Responsive design for the circle */
+        @media (max-width: 768px) {
+            .circle-container {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .center {
+                width: 150px;
+                height: 150px;
+                font-size: 24px;
+            }
+            
+            .center-cover {
+                width: 152px;
+                height: 152px;
+            }
+            
+            .section-text {
+                font-size: 18px;
+            }
+            
+            .top {
+                padding-top: 50px;
+            }
+            
+            .bottom {
+                padding-bottom: 50px;
+            }
+            
+            .left {
+                padding-left: 50px;
+            }
+            
+            .right {
+                padding-right: 50px;
+            }
+            
+            .left .section-content,
+            .right .section-content {
+                writing-mode: vertical-rl;
+            }
+            
+            .left .section-content {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Subtle animation on load */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .circle-container {
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        #core-values {
+            margin-top: -8rem;
+        }
+        
+        /* Timeline styles */
+        /* Mobile timeline line */
+        @media (max-width: 767px) {
+            .relative.mb-12::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                background: #b19a7d;
+                z-index: 0;
+            }
+            
+            /* Adjust spacing for mobile */
+            .relative.mb-12 {
+                padding-left: 1.5rem;
+            }
+            
+            /* Year markers positioning */
+            .text-primary.font-bold.text-lg.mb-2 {
+                margin-left: -1.5rem;
+                margin-bottom: 0.75rem !important;
+            }
+        }
+        
+        /* Enhanced hover effects */
+        .group:hover .group-hover\:scale-105 {
+            transform: scale(1.05);
+        }
+        
+        .group:hover .group-hover\:rotate-1 {
+            transform: rotate(1deg);
+        }
+        
+        .group:hover .group-hover\:-rotate-1 {
+            transform: rotate(-1deg);
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        
+        .transition-transform {
+            transition: transform 0.3s ease;
+        }
+        
+        .transition-colors {
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .transition-opacity {
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Footer fix */
+        footer {
+            margin-top: auto;
+        }
+        
+        /* Mobile font size adjustments */
+        @media (max-width: 768px) {
+            /* What We Do section */
+            #what-we-do h2 {
+                font-size: 2.2rem !important;
+            }
+            
+            #what-we-do blockquote {
+                font-size: 1rem !important;
+                line-height: 1.75 !important;
+                width: 320px;
+                margin-left: -18px;
+                margin-top: -18px;
+            }
+            
+            /* How We Do section */
+
+
+            #how-we-do h2 {
+                font-size: 2.2rem !important;
+            }
+            
+            .step-card h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            .step-card p {
+                font-size: 0.875rem !important;
+            }
+            
+            /* Pyramid Model */
+            .pyramid-layer {
+                font-size: 16px !important;
+            }
+            
+            /* Core Values section */
+            #core-values h2 {
+                font-size: 2.2rem !important;
+            }
+            
+            #core-values .bg-warm-beige p {
+                font-size: 1rem !important;
+                margin-top: -4px;
+                width: 285px;
+                margin-left: -8px;
+                align-content: center;
+
+            }
+            
+            /* Journey section */
+
+            #journey-through-time  {
+                margin-top: -8px;
+            }
+
+            #journey-through-time h2 {
+                font-size: 2.2rem !important;
+            }
+            
+            .group h3 {
+                font-size: 1.25rem !important;
+            }
+            
+            .group p {
+                font-size: 0.875rem !important;
+            }
+            
+            /* Footer text adjustments */
+            footer .text-xl {
+                font-size: 1.10rem !important;
+            }
+            
+            footer .text-sm {
+                font-size: 0.75rem !important;
+            }
+            
+            /* Tab navigation font size */
+            .about-tab-nav a {
+                font-size: 0.55rem !important;
+                padding: 0.375rem 0.5rem !important;
+            }
+
+            #mobileMenu {
+                background: white !important;
+                border: 1px solid #e5e7eb !important;
+                border-radius: 0.5rem !important;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+            }
+
+            #mobileMenu nav {
+                background: white !important;
+            }
+
+            #mobileMenu a {
+                background: white !important;
+            }
+
+            #mobileMenu .bg-gray-50 {
+                background: #f9fafb !important;
+            }
+        }
+
+        /* FIX: What We Do and Core Values content alignment */
+        #what-we-do .bg-warm-beige blockquote,
+        #core-values .bg-warm-beige p {
+            text-align: center !important;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            display: block !important;
+        }
+
+        @media (max-width: 768px) {
+            #what-we-do .bg-warm-beige blockquote,
+            #core-values .bg-warm-beige p {
+                width: 100% !important;
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white min-h-screen flex flex-col">
+
+    <!-- ====================== HEADER ====================== -->
+    <header id="mainHeader" class="fixed top-0 left-0 w-full z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center h-20">
+                <!-- Logo -->
+                <a href="/index.html" class="flex items-left flex-shrink-0 flex-1">
+                    <div id="logoWrapper" class="w-48 md:w-80 h-10 md:h-14 rounded-lg overflow-hidden">
+                        <img src="/images/logo.png" alt="UCatapult Logo" class="w-full h-full object-contain" />
+                    </div>
+                </a>
+
+                <!-- Right Side -->
+                <div class="flex items-center gap-4 md:gap-6">
+                    <!-- Donate Button -->
+                    <a href="donate.html"
+                        class="donate-btn hidden md:inline-block text-white px-6 py-2 md:px-8 md:py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors text-base md:text-lg">
+                        Donate
+                    </a>
+
+                    <!-- Hamburger Button -->
+                    <button 
+                        aria-label="Menu" 
+                        class="text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+                        onclick="toggleMobileMenu()"
+                        type="button">
+                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden absolute right-4 top-full mt-1 w-72 bg-white border border-gray-200 rounded-lg shadow-xl z-50">
+                <nav class="py-2">
+                    <a href="/index.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors border-b border-gray-100">Home</a>
+                    <a href="/aboutus.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors border-b border-gray-100">About Us</a>
+                    <!-- FIX: Updated file name from "people and partners.html" to "people-and-partners.html" -->
+                    <a href="/people and partners.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors border-b border-gray-100">Team and Partners</a>
+                    <a href="/impact.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors border-b border-gray-100">Impact Stories</a>
+
+                    <div class="border-b border-gray-100">
+                        <button type="button" onclick="toggleMobileDropdown('joinUs')"
+                            class="w-full flex justify-between items-center px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors">
+                            Join Us
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="joinUs" class="hidden bg-gray-50">
+                            <a href="/joinus/join us.html" class="block px-8 py-3 text-gray-600 hover:bg-gray-100 transition-colors">Join Us</a>
+                            <a href="/joinus/contactus.html" class="block px-8 py-3 text-gray-600 hover:bg-gray-100 transition-colors border-b border-gray-200">Contact Us</a>
+                        </div>
+                    </div>
+
+                    <a href="/donate.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors border-b border-gray-100">Donate</a>
+                    <a href="/school-registration.html" class="block px-6 py-3 text-gray-800 font-medium hover:bg-gray-50 transition-colors">School Registration</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- =========================
+         Tab navigation (sticky under header)
+    ============================== -->
+    <nav class="about-tab-nav shadow-sm">
+        <ul class="hidden md:flex gap-4 md:gap-5">
+            <li><a id="tab-what" class="active" href="#what-we-do">What We Do</a></li>
+            <li><a id="tab-how" href="#how-we-do">How We Do</a></li>
+            <li><a id="tab-values" href="#core-values">Our Core Values</a></li>
+            <li><a id="tab-journey" href="#journey-through-time">Our Journey</a></li>
+        </ul>
+        
+        <!-- Mobile dropdown menu -->
+        <div class="md:hidden relative">
+            <div id="mobileTabMenu" class="absolute hidden w-full bg-white shadow-lg z-50">
+                <a href="#what-we-do" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 border-b border-gray-100" onclick="closeMobileTabMenu()">What We Do</a>
+                <a href="#how-we-do" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 border-b border-gray-100" onclick="closeMobileTabMenu()">How We Do</a>
+                <a href="#core-values" class="block px-4 py-3 text-gray-700 hover:bg-gray-50 border-b border-gray-100" onclick="closeMobileTabMenu()">Our Core Values</a>
+                <a href="#journey-through-time" class="block px-4 py-3 text-gray-700 hover:bg-gray-50" onclick="closeMobileTabMenu()">Our Journey</a>
+            </div>
+        </div>
+    </nav>    
+
+    <!-- =========================
+         SECTION: WHAT WE DO
+    ============================== -->
+    <section id="what-we-do" class="bg-white py-16">
+        <div class="md:hidden" style="height: 8rem;"></div>
+
+        <div class="max-w-7xl mx-auto px-2 text-center">
+            <div class="md:hidden" style="height: 1rem;"></div>
+            <div class="hidden md:block"><br><br><br><br><br><br><br></div>
+            <h2 class="text-4xl md:text-5xl font-bold text-primary-dark mb-6 text-center">WHAT WE DO</h2>
+            <div class="bg-warm-beige rounded-2xl shadow-lg p-10 ">
+                <blockquote class="text-2xl md:text-2xl font-light text-primary-dark leading-relaxed">
+                    UCatapult Foundation is pioneering India's first ed-tech platform exclusively for secondary and senior secondary students from rural and tribal backgrounds, bridging critical educational gaps through our Digital Machaan program. We deliver live curriculum-based sessions in regional languages, equip students with Android laptops to ensure digital access, and provide tailored mentorship in career counseling and scholarship opportunities, all in close partnership with government and community stakeholders. With your support, we are enabling passionate young learners to achieve educational success and uplifting entire families and communities for a brighter, more equitable future.
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+         SECTION: HOW WE DO
+    ============================== -->
+    <section id="how-we-do" class="bg-white py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-8">HOW WE DO</h2>
+        </div>
+
+        <!-- Step-by-Step Detail Cards -->
+
+        <style></style>
+        <section class="py-20 bg-white">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-16">
+                    <p class="text-l text-gray-600 max-w-3xl mx-auto">
+                        Detailed breakdown of how we support every student from foundation to graduation
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Step 1: Virtual Live Classes -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                1
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Real-time Virtual Classes</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">⏱️🌐</div>
+                                <div class="text-sm text-gray-600 font-medium">Live Expert Instruction</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Our subject experts facilitate real-time online classes for learners of classes 8, 9, 10, and 11 of the Zilla Parishad schools of Maharashtra who join us with laptops and mobiles from their homes, hostels, and schools.
+                        </p>
+                    </div>
+
+                    <!-- Step 2: Discover & Plan Future -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                2
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Interactive Engagement</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">💬👥</div>
+                                <div class="text-sm text-gray-600 font-medium">Small Group Discussions</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            During the evening session, discussion happens in a small group, which makes it possible for learners to answer more queries and provide feedback. Hence, making engagement effective for learners. 
+                        </p>
+                    </div>
+
+                    <!-- Step 3: Mentorship for Growth -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                3
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Other Resources</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">📄📱</div>
+                                <div class="text-sm text-gray-600 font-medium">Bilingual Study Materials</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                             Learners receive recorded sessions, daily homework, and chapter-wise worksheets in both Marathi and English to cater to the linguistic needs of both languages. 
+                        </p>
+                    </div>
+
+                    <!-- Step 4: College Entry & Graduation -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                4
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Mentorship Support</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🤝🎯</div>
+                                <div class="text-sm text-gray-600 font-medium">Buddy Program</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                             With the assistance of IIT Powai volunteers, a mentorship program known as the buddy program is promptly organized to assist our learners with subjects like time management, communication, creativity, teamwork, community awareness, etc.  
+                        </p>
+                    </div>
+
+                    <!-- Step 5: College Entry & Graduation -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                5
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Scholarship / College Admission Support</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🎓💸</div>
+                                <div class="text-sm text-gray-600 font-medium">Future Guidance</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Class 12 students are contacted by the scholarship specialist to apply for various scholarship programs, college admission, etc.
+                        </p>
+                    </div>
+
+                    <!-- Step 6: College Entry & Graduation -->
+                    <div class="step-card bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-4">
+                                6
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Mode of Communication</h3>
+                        </div>
+                        
+                        <!-- Mini Image -->
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg h-32 flex items-center justify-center mb-6">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">💬📲</div>
+                                <div class="text-sm text-gray-600 font-medium">WhatsApp Community</div>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Teachers' and students' WhatsApp community channels are used for all forms of communication pertaining to classes, resources, and meetings.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pyramid Model -->
+        <section class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="header" style="text-align:center; margin-bottom:30px;">
+                    <h2 class="text-4xl font-bold text-primary-dark mb-4">UCatapult Model</h2>
+                </div>
+
+                <div class="pyramid-container">
+                    <div class="pyramid-layer graduation" onclick="showInfo('graduation')">
+                        Graduation
+                    </div>
+                    <div class="pyramid-layer mentorship" onclick="showInfo('mentorship')">
+                        Mentorship
+                    </div>
+                    <div class="pyramid-layer planning" onclick="showInfo('planning')">
+                        Planning
+                    </div>
+                    <div class="pyramid-layer foundation" onclick="showInfo('foundation')">
+                        Foundation
+                    </div>
+                </div>
+
+                <div class="tap-hint">
+                    Tap any layer to learn more
+                </div>
+            </div>
+        </section>
+
+        <!-- Overlays for each layer -->
+        <div id="graduation-overlay" class="overlay" onclick="closeOverlay(event)">
+            <div class="info-box">
+                <button class="close-btn" onclick="closeInfo()">&times;</button>
+                <h3 class="info-title">Graduation Layer</h3>
+                <p class="info-description">
+                    The pinnacle of your academic journey. This layer represents the culmination of all your hard work, dedication, and strategic planning. Here, you'll find resources for final preparations, career readiness, and transition planning to ensure you're fully prepared for life after graduation.
+                </p>
+            </div>
+        </div>
+
+        <div id="mentorship-overlay" class="overlay" onclick="closeOverlay(event)">
+            <div class="info-box">
+                <button class="close-btn" onclick="closeInfo()">&times;</button>
+                <h3 class="info-title">Mentorship Layer</h3>
+                <p class="info-description">
+                    Connect with experienced professionals and peers who guide your academic and career journey. Our mentorship program provides personalized guidance, industry insights, and valuable networking opportunities to accelerate your growth and success.
+                </p>
+            </div>
+        </div>
+
+        <div id="planning-overlay" class="overlay" onclick="closeOverlay(event)">
+            <div class="info-box">
+                <button class="close-btn" onclick="closeInfo()">&times;</button>
+                <h3 class="info-title">Planning Layer</h3>
+                <p class="info-description">
+                    Strategic academic and career planning forms the backbone of your success. This layer includes course selection guidance, timeline management, goal setting, and resource allocation to ensure you stay on track toward your objectives.
+                </p>
+            </div>
+        </div>
+
+        <div id="foundation-overlay" class="overlay" onclick="closeOverlay(event)">
+            <div class="info-box">
+                <button class="close-btn" onclick="closeInfo()">&times;</button>
+                <h3 class="info-title">Foundation Layer</h3>
+                <p class="info-description">
+                    The essential building blocks of academic success. This foundational layer encompasses study skills, time management, financial literacy, and personal development tools that create a solid base for all your future achievements.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* Add these styles to your existing CSS */
+        /* Step cards hover effect */
+        .step-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Pyramid layers hover effect */
+        .pyramid-layer {
+            transition: all 0.3s ease;
+        }
+
+        .pyramid-layer:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Core values circle sections hover effect */
+        .section {
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: scale(1.08);
+            z-index: 20;
+        }
+
+        /* Timeline cards hover effect */
+        .group:hover .bg-white {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Ensure smooth transitions for all interactive elements */
+        .bg-white.rounded-lg.shadow-lg {
+            transition: all 0.3s ease;
+        }
+
+        /* Footer links hover effect */
+        footer a {
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Header donate button hover effect */
+        .donate-btn {
+            transition: all 0.3s ease;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Mobile menu items hover effect */
+        #mobileMenu a {
+            transition: all 0.3s ease;
+        }
+
+        #mobileMenu a:hover {
+            transform: translateX(5px);
+        }
+
+        /* Tab navigation hover effect */
+        .about-tab-nav a {
+            transition: all 0.3s ease;
+        }
+
+        .about-tab-nav a:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+    <!-- =========================
+        SECTION: OUR CORE VALUES
+    ============================== -->
+    <section id="core-values" class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-primary-dark mb-12 text-center">OUR CORE VALUES</h2>
+            
+            <div class="bg-warm-beige rounded-2xl shadow-lg p-10 mb-16">
+                <p class="text-xl text-primary-dark leading-relaxed ">
+                    The organization finds that every learner should get an opportunity to bloom completely. All they require, a loving and caring environment to grow to their full potential. With this commitment, for our live virtual classes, teachers get time and space to design their classes as per the learners' setting for effective live learning to happen. There is an utmost sense of love, respect, and faith among the team members as well as for the students who join us. We are continuously learning and evolving in our mission to reach and support rural learners.
+                </p>
+            </div>
+            
+            <!-- 3D Circle Diagram -->
+            <div class="circle-container">
+                <!-- Diagonal division lines -->
+                <div class="diagonal-line diagonal-1"></div>
+                <div class="diagonal-line diagonal-2"></div>
+                
+                <div class="center">LOVE</div>
+
+                <!-- Sections with text only -->
+                <div class="section top" onclick="highlightSection('top')">
+                    <div class="section-content">
+                        <span class="section-text">RESPECT</span>
+                    </div>
+                </div>
+                
+                <div class="section bottom" onclick="highlightSection('bottom')">
+                    <div class="section-content">
+                        <span class="section-text">FAITH</span>
+                    </div>
+                </div>
+                
+                <div class="section left" onclick="highlightSection('left')">
+                    <div class="section-content">
+                        <span class="section-text">COMMITMENT</span>
+                    </div>
+                </div>
+                
+                <div class="section right" onclick="highlightSection('right')">
+                    <div class="section-content">
+                        <span class="section-text">RESILIENCE</span>
+                    </div>
+                </div>
+                
+                <!-- Hidden cover for center parts -->
+                <div class="center-cover"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+        SECTION: OUR JOURNEY
+    ============================== -->
+    <section id="journey-through-time" class="py-16 md:py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-dark mb-12 md:mb-16 anchor-offset">OUR JOURNEY</h2>
+            
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-1 h-full bg-primary-light hidden md:block"></div>
+                
+                <!-- Timeline Item 1 -->
+                <div class="relative mb-12 md:mb-16 group">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <!-- Content -->
+                        <div class="md:w-1/2 md:pr-8 lg:pr-12 mb-6 md:mb-0 md:order-1">
+                            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 relative transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                <!-- Timeline dot for mobile -->
+                                <div class="absolute -left-2 md:-right-4 top-8 w-6 h-6 md:w-8 md:h-8 bg-primary rounded-full border-4 border-white shadow-md md:hidden group-hover:scale-125 transition-transform duration-300"></div>
+                                <!-- Timeline dot for desktop -->
+                                <div class="absolute -right-4 top-8 w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md hidden md:block group-hover:scale-125 transition-transform duration-300"></div>
+                                
+                                <h3 class="text-xl md:text-2xl font-bold text-primary mb-3 md:mb-4 group-hover:text-primary-dark transition-colors duration-300">2021-2022</h3>
+                                <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+                                    In partnership with Bihar government school teachers and a local NGO, an initiative was started on March 26, 2020, with the goal of empowering educators through its first enablement session. Later, the program turned its attention to the students. On October 2, 2020, approximately 65 students from classes 6 and 8 participated in the first virtual class, marking a significant milestone. Reading English stories was the main focus of the alternative school class.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image -->
+                        <div class="md:w-1/2 md:pl-8 lg:pl-12 order-2 group-hover:rotate-1 transition-transform duration-300">
+                            <div class="rounded-lg overflow-hidden shadow-lg aspect-video md:aspect-[4/3] group-hover:shadow-xl transition-all duration-300">
+                                <img src="images/photo gallery/ourjourney1.png" alt="The Beginning" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Year marker for mobile -->
+                        <div class="text-primary font-bold text-lg mb-2 md:hidden order-1 w-full text-left group-hover:scale-105 transition-transform duration-300">2020</div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="relative mb-12 md:mb-16 group">
+                    <div class="flex flex-col md:flex-row-reverse items-center">
+                        <!-- Content -->
+                        <div class="md:w-1/2 md:pl-8 lg:pl-12 mb-6 md:mb-0 md:order-1">
+                            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 relative transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                <!-- Timeline dot for mobile -->
+                                <div class="absolute -left-2 md:-left-4 top-8 w-6 h-6 md:w-8 md:h-8 bg-primary rounded-full border-4 border-white shadow-md md:hidden group-hover:scale-125 transition-transform duration-300"></div>
+                                <!-- Timeline dot for desktop -->
+                                <div class="absolute -left-4 top-8 w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md hidden md:block group-hover:scale-125 transition-transform duration-300"></div>
+                                
+                                <h3 class="text-xl md:text-2xl font-bold text-primary mb-3 md:mb-4 group-hover:text-primary-dark transition-colors duration-300">2022-2023</h3>
+                                <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+                                    We started our Maharashtra chapter in September 2022 and started training teachers in digital literacy. In partnership with an NGO that works with farmers, we progressively onboarded ten Zilla Parishad schools, five of which were in the Beed district and five of which were in the Jalgaon district.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image -->
+                        <div class="md:w-1/2 md:pr-8 lg:pr-12 order-2 group-hover:-rotate-1 transition-transform duration-300">
+                            <div class="rounded-lg overflow-hidden shadow-lg aspect-video md:aspect-[4/3] group-hover:shadow-xl transition-all duration-300">
+                                <img src="images/photo gallery/ourjourney2.png" alt="First Students" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Year marker for mobile -->
+                        <div class="text-primary font-bold text-lg mb-2 md:hidden order-1 w-full text-right group-hover:scale-105 transition-transform duration-300">2020-2021</div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="relative mb-12 md:mb-16 group">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <!-- Content -->
+                        <div class="md:w-1/2 md:pr-8 lg:pr-12 mb-6 md:mb-0 md:order-1">
+                            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 relative transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                <!-- Timeline dot for mobile -->
+                                <div class="absolute -left-2 md:-right-4 top-8 w-6 h-6 md:w-8 md:h-8 bg-primary rounded-full border-4 border-white shadow-md md:hidden group-hover:scale-125 transition-transform duration-300"></div>
+                                <!-- Timeline dot for desktop -->
+                                <div class="absolute -right-4 top-8 w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md hidden md:block group-hover:scale-125 transition-transform duration-300"></div>
+                                
+                                <h3 class="text-xl md:text-2xl font-bold text-primary mb-3 md:mb-4 group-hover:text-primary-dark transition-colors duration-300">2023-2024</h3>
+                                <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+                                    In 2023-24, the UCatapult Foundation significantly expanded its collaborations. It partnered with local government officials in the Jalgaon and Dharashiv districts of Maharashtra to onboard Zilla Parishad (ZP) schools. A major milestone was the launch of a STEM literacy program in collaboration with the government, providing 9,000 STEM books to 100 schools. The foundation also completed its incubation with NSRCEL/IIM Bangalore and was selected for the Women Startup Initiative. Other collaborators included Pratham Books for the STEM library project and various NGOs for community work.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image -->
+                        <div class="md:w-1/2 md:pl-8 lg:pl-12 order-2 group-hover:rotate-1 transition-transform duration-300">
+                            <div class="rounded-lg overflow-hidden shadow-lg aspect-video md:aspect-[4/3] group-hover:shadow-xl transition-all duration-300">
+                                <img src="images/photo gallery/ourjourney3.png" alt="Scaling Up" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Year marker for mobile -->
+                        <div class="text-primary font-bold text-lg mb-2 md:hidden order-1 w-full text-left group-hover:scale-105 transition-transform duration-300">2022-2025</div>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 4 -->
+                <div class="relative mb-12 md:mb-16 group">
+                    <div class="flex flex-col md:flex-row-reverse items-center">
+                        <!-- Content -->
+                        <div class="md:w-1/2 md:pl-8 lg:pl-12 mb-6 md:mb-0 md:order-1">
+                            <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 relative transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
+                                <!-- Timeline dot for mobile -->
+                                <div class="absolute -left-2 md:-left-4 top-8 w-6 h-6 md:w-8 md:h-8 bg-primary rounded-full border-4 border-white shadow-md md:hidden group-hover:scale-125 transition-transform duration-300"></div>
+                                <!-- Timeline dot for desktop -->
+                                <div class="absolute -left-4 top-8 w-8 h-8 bg-primary rounded-full border-4 border-white shadow-md hidden md:block group-hover:scale-125 transition-transform duration-300"></div>
+                                
+                                <h3 class="text-xl md:text-2xl font-bold text-primary mb-3 md:mb-4 group-hover:text-primary-dark transition-colors duration-300">2024-2025</h3>
+                                <p class="text-gray-600 leading-relaxed text-sm md:text-base">
+                                    In 2024-25, we collaborated with the District Collectors of Nandurbar and Jalgaon, successfully onboarding 106 and 53 government and government-aided Ashramshala schools onto our digital platform, respectively. In collaboration with Pratham, we also distributed 10,500 Marathi language storybooks to 206 Ashramshala schools and awarded 26 Android laptops to deserving students in classes 9 and 10.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image -->
+                        <div class="md:w-1/2 md:pr-8 lg:pr-12 order-2 group-hover:-rotate-1 transition-transform duration-300">
+                            <div class="rounded-lg overflow-hidden shadow-lg aspect-video md:aspect-[4/3] group-hover:shadow-xl transition-all duration-300">
+                                <img src="images/photo gallery/ourjourney4.png" alt="First Students" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+                        
+                        <!-- Year marker for mobile -->
+                        <div class="text-primary font-bold text-lg mb-2 md:hidden order-1 w-full text-right group-hover:scale-105 transition-transform duration-300">2020-2021</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================== FOOTER ====================== -->
+    <footer class="bg-primary-dark text-white py-12 md:py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Logo and Description -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <span class="text-xl font-bold">UCatapult Foundation</span>
+                    </div>
+
+                    <p class="text-gray-200 mb-4 leading-relaxed text-sm md:text-base">
+                        Mumbai headquartered, edu-preneurial not for profit organisation
+                    </p>
+                    <p class="text-gray-200 mb-4 leading-relaxed text-sm md:text-base">
+                        B-6, Nandita C.H.S. Ltd, 2nd Floor <br>
+                        93 Linking Road, Santacruz (W) <br>
+                        Mumbai – 400054
+                    </p>
+                    <div class="text-gray-300 text-sm md:text-base">
+                        <p>Mumbai, India</p>
+                        <p>info@ucatapult.org</p>
+                    </div>
+                </div>
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-primary-light transition-colors text-sm md:text-base">About Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-primary-light transition-colors text-sm md:text-base">Team & Partners</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-primary-light transition-colors text-sm md:text-base">Impact Stories</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-primary-light transition-colors text-sm md:text-base">Join Us</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-primary-light transition-colors text-sm md:text-base">School Registration</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/profile.php?id=100063888886979" target="_blank" class="w-8 h-8 md:w-10 md:h-10 bg-[#49392a] rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/prema-mishra-92baa35b/" target="_blank" class="w-8 h-8 md:w-10 md:h-10 bg-[#49392a] rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                        <a href="tel:+919811756353" class="w-8 h-8 md:w-10 md:h-10 bg-[#49392a] rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Bottom Footer -->
+            <div class="border-t border-[#6d5640] pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="flex flex-col items-center md:items-start">
+                    <p class="text-gray-300 text-xs md:text-sm mb-1">
+                        Copyright © 2025 UCatapult Foundation. All Rights Reserved.
+                    </p>
+                    <p class="text-gray-300 text-xs md:text-sm">
+                        Developed by 
+                        <a href="https://www.linkedin.com/in/amrita-sinha02/" target="_blank" class="text-blue-500 hover:text-blue-400 transition-colors">
+                            Amrita Sinha
+                        </a>
+                    </p>
+                </div>
+                <div class="flex space-x-4 md:space-x-6 text-xs md:text-sm mt-4 md:mt-0">
+                    <a href="#" class="text-gray-300 hover:text-primary-light transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-300 hover:text-primary-light transition-colors">Terms of Use</a>
+                </div>
+            </div>
+
+
+        </div>
+    </footer>
+
+    <!-- =========================
+         JavaScript Functions
+    ============================== -->
+    <script>
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        function toggleMobileDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            if (!dropdown) return;
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Header background on scroll - fixed version
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Init header state on load
+        window.addEventListener('load', () => {
+            const header = document.getElementById('mainHeader');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            }
+        });
+
+        // Tab highlight behavior
+        (function() {
+            const tabs = {
+                'what-we-do': document.getElementById('tab-what'),
+                'how-we-do': document.getElementById('tab-how'),
+                'core-values': document.getElementById('tab-values'),
+                'journey-through-time': document.getElementById('tab-journey')
+            };
+
+            // Click handlers
+            Object.values(tabs).forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    document.querySelectorAll('.about-tab-nav a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // IntersectionObserver to update active tab on scroll
+            const options = { root: null, rootMargin: '-35% 0px -50% 0px', threshold: 0 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.about-tab-nav a').forEach(a => a.classList.remove('active'));
+                        const activeTab = tabs[id];
+                        if (activeTab) activeTab.classList.add('active');
+                    }
+                });
+            }, options);
+
+            ['what-we-do','how-we-do','core-values','journey-through-time'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) observer.observe(el);
+            });
+        })();
+
+        // Mobile tab menu functions
+        function toggleMobileTabMenu() {
+            const mobileTabMenu = document.getElementById('mobileTabMenu');
+            mobileTabMenu.classList.toggle('hidden');
+        }
+
+        function closeMobileTabMenu() {
+            const mobileTabMenu = document.getElementById('mobileTabMenu');
+            mobileTabMenu.classList.add('hidden');
+        }
+        
+        // Pyramid model functions
+        function showInfo(layer) {
+            const overlay = document.getElementById(layer + '-overlay');
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInfo() {
+            const overlays = document.querySelectorAll('.overlay');
+            overlays.forEach(overlay => {
+                overlay.style.display = 'none';
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeOverlay(event) {
+            if (event.target.classList.contains('overlay')) {
+                closeInfo();
+            }
+        }
+
+        // Close overlay with escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeInfo();
+            }
+        });
+
+        // Circle section highlight function
+        function highlightSection(section) {
+            // Remove active class from all sections
+            document.querySelectorAll('.section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Add active class to clicked section
+            document.querySelector(`.section.${section}`).classList.add('active');
+            
+            // Auto remove active class after 3 seconds
+            setTimeout(() => {
+                document.querySelectorAll('.section').forEach(el => {
+                    el.classList.remove('active');
+                });
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>
